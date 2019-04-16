@@ -27,4 +27,12 @@ module.exports =  class TransactionBlock{
         console.log("Block mined => ",this.currentHash);
     }
 
+    hasValidTransactions(){
+        for(const txn of this.transactions){
+            if(!txn.isValid())
+                return false;
+        }
+        return true;
+    }
+
 }

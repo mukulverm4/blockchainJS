@@ -35,7 +35,13 @@ module.exports =  class BlockChain{
         ];
     }
 
-    createTransaction(transaction){
+    addTransaction(transaction){
+        if(!transaction.fromAddress || !transaction.toAddress){
+            throw new Error('Transaction must contain from and to address!')
+        }
+        if(!transaction.isValid()){
+            throw new Error('Cannot add invalid transaction to the chain!');
+        }
         this.pendingTransactions.push(transaction);
     }
 
@@ -64,6 +70,10 @@ module.exports =  class BlockChain{
             }
 
             if(currentBlock.previousBlock !== previousBlock.hash){
+                return false;
+            }
+            
+            if(!currentBlock.hasValidTransactions()){
                 return false;
             }
         }
